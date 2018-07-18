@@ -73,22 +73,22 @@ set(CUDA_NVCC_FLAGS
 
 
 #external
-set(EXTERNAL_OPENGL_DIR External/GL)
+set(EXTERNAL_OPENGL_DIR ${PROJECT_SOURCE_DIR}/External/GL)
 set(EXTERNAL_OPENGL_LIB_DEBUG
-	${EXTERNAL_OPENGL_DIR}/freeglut_staticd.lib
-	${EXTERNAL_OPENGL_DIR}/freeglutd.lib
-	${EXTERNAL_OPENGL_DIR}/glew32.lib
-	${EXTERNAL_OPENGL_DIR}/glew32s.lib
+	${EXTERNAL_OPENGL_DIR}/lib/x64/freeglut_staticd.lib
+	${EXTERNAL_OPENGL_DIR}/lib/x64/freeglutd.lib
+	${EXTERNAL_OPENGL_DIR}/lib/x64/glew32.lib
+	${EXTERNAL_OPENGL_DIR}/lib/x64/glew32s.lib
 )
 
 set(EXTERNAL_OPENGL_LIB_RELEASE
-	${EXTERNAL_OPENGL_DIR}/freeglut_static.lib
-	${EXTERNAL_OPENGL_DIR}/freeglut.lib
-	${EXTERNAL_OPENGL_DIR}/glew32.lib
-	${EXTERNAL_OPENGL_DIR}/glew32s.lib
+	${EXTERNAL_OPENGL_DIR}/lib/x64/freeglut_static.lib
+	${EXTERNAL_OPENGL_DIR}/lib/x64/freeglut.lib
+	${EXTERNAL_OPENGL_DIR}/lib/x64/glew32.lib
+	${EXTERNAL_OPENGL_DIR}/lib/x64/glew32s.lib
 )
 
-set(EXTERNAL_FFMPEG_FIR External/FFmpeg)
+set(EXTERNAL_FFMPEG_FIR ${PROJECT_SOURCE_DIR}/External/FFmpeg)
 set(EXTERNAL_FFMPEG_LIB
 	${EXTERNAL_FFMPEG_FIR}/lib/x64/avcodec.lib
 	${EXTERNAL_FFMPEG_FIR}/lib/x64/avformat.lib
@@ -99,7 +99,7 @@ set(EXTERNAL_FFMPEG_LIB
 
 
 # NvDecoder
-set(NV_DECODER_DIR NvCodec/NvDecoder)
+set(NV_DECODER_DIR ${PROJECT_SOURCE_DIR}/NvCodec/NvDecoder)
 set(NV_DECODER_HEADER_FILES
 	${NV_DECODER_DIR}/cuviddec.h
 	${NV_DECODER_DIR}/nvcuvid.h
@@ -108,8 +108,8 @@ set(NV_DECODER_HEADER_FILES
 set(NV_DECODER_SOURCE_FILES
 	${NV_DECODER_DIR}/NvDecoder.cpp
 )
-set(NV_DECODER_LIBS
-	${NV_DECODER_DIR}/nvcuvid.lib
+set(NV_DECODER_LIB
+	${PROJECT_SOURCE_DIR}/NvCodec/Lib/x64/nvcuvid.lib
 )
 
 set(UTIL_DIR Utils)
@@ -140,6 +140,7 @@ include_directories(
 )
 
 cuda_add_executable(${name}
+	${NV_DECODER_HEADER_FILES}
 	${NV_DECODER_SOURCE_FILES}
 	${UTIL_SOURCE}
 	${MY_HEADER_FILES}
@@ -149,21 +150,12 @@ cuda_add_executable(${name}
 
 target_link_libraries(${name}
 
-	${CUDA_LIBRARY} 	
-	${NV_DECODER_LIBS}
+	${CUDA_LIBRARY}
+
+	${CUDA_TOOLKIT_ROOT_DIR}/lib/x64/cuda.lib
+
+	${NV_DECODER_LIB}
 	${EXTERNAL_FFMPEG_LIB}
 	debug  ${EXTERNAL_OPENGL_LIB_DEBUG}
 	optimized  ${EXTERNAL_OPENGL_LIB_RELEASE}
-	# ${CUDA_npp_LIBRARY} 
-	# ${CUDA_nppc_LIBRARY} 
-	# ${CUDA_nppicc_LIBRARY}
-	# ${CUDA_nppicom_LIBRARY}
-	# ${CUDA_nppidei_LIBRARY}
-	# ${CUDA_nppif_LIBRARY}
-	# ${CUDA_nppig_LIBRARY}
-	# ${CUDA_nppim_LIBRARY}
-	# ${CUDA_nppist_LIBRARY}
-	# ${CUDA_nppisu_LIBRARY}
-	# ${CUDA_nppitc_LIBRARY}
-	# ${CUDA_npps_LIBRARY}
 	)

@@ -13,9 +13,9 @@
 #include <algorithm>
 #include <thread>
 #include <cuda.h>
-#include "NvDecoder/NvDecoder.h"
-#include "../Utils/NvCodecUtils.h"
-#include "../Utils/FFmpegDemuxer.h"
+#include "NvDecoder.h"
+#include "NvCodecUtils.h"
+#include "FFmpegDemuxer.h"
 
 simplelogger::Logger *logger = simplelogger::LoggerFactory::CreateConsoleLogger();
 
